@@ -1,0 +1,26 @@
+﻿@model LibraryMVC1.Models.Room
+
+@{
+    ViewData["Title"] = "Добавяне на стая";
+}
+
+<h2>Добавяне на нова стая</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="RoomNumber"></label>
+        <input asp-for="RoomNumber" class="form-control" required />
+        <span asp-validation-for="RoomNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Capacity"></label>
+        <input asp-for="Capacity" class="form-control" type="number" required />
+        <span asp-validation-for="Capacity" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Запази</button>
+</form>
+
+<a asp-action="Index">Назад към списъка</a>
+

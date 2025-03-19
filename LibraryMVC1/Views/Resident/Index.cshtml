@@ -1,0 +1,35 @@
+﻿@model IEnumerable<LibraryMVC1.Models.Resident>
+
+@{
+    ViewData["Title"] = "Жители на общежитието";
+}
+
+<h2>Списък с жители</h2>
+
+<a asp-action="Create" class="btn btn-success">Добави нов жител</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Име</th>
+            <th>Email</th>
+            <th>Стая</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var resident in Model)
+        {
+            <tr>
+                <td>@resident.FullName</td>
+                <td>@resident.Email</td>
+                <td>@resident.Room.RoomNumber</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@resident.Id" class="btn btn-warning">Редакция</a>
+                    <a asp-action="Delete" asp-route-id="@resident.Id" class="btn btn-danger">Изтриване</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
