@@ -1,0 +1,15 @@
+﻿@model LibraryMVC1.Models.Resident
+
+<h2>Сигурни ли сте, че искате да изтриете този жител?</h2>
+
+<div>
+    <h4>@Model.FullName</h4>
+    <p>Email: @Model.Email</p>
+    <p>Стая: @(Model.Room != null ? Model.Room.RoomNumber : "Няма")</p>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Изтрий</button>
+    <a asp-action="Index" class="btn btn-secondary">Отказ</a>
+</form>

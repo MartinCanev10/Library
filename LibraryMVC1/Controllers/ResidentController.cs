@@ -53,4 +53,82 @@ public class ResidentController : Controller
         ViewBag.Rooms = new SelectList(_context.Rooms, "Id", "RoomNumber");
         return View(model);
     }
+
+    // GET: Resident/Edit/5
+    [HttpGet]
+    public async Task<IActionResult> Edit(int? id)
+    {
+        if (id == null) return NotFound();
+
+        var resident = await _context.Residents.FindAsync(id);
+        if (resident == null) return NotFound();
+
+        ViewBag.Rooms = new SelectList(_context.Rooms, "Id", "RoomNumber", resident.RoomId);
+
+
+        return View(resident);
+    }
+
+    // POST: Resident/Edit/5
+    [HttpPost]
+    public async Task<IActionResult> Edit(int id, EditResidentViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var resident = await _context.Residents.FindAsync(id);
+        if (resident == null)
+        {
+            return NotFound();
+        }
+
+        // Актуализиране на полетата
+        resident.FullName = model.FullName;
+        resident.Email = model.Email;
+        resident.RoomId = model.RoomId;
+
+        // Запазване в базата
+        _context.Residents.Update(resident);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
+    // GET: Resident/Delete/{id}
+    [HttpGet]
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var resident = await _context.Residents
+            .Include(r => r.Room)
+            .FirstOrDefaultAsync(m => m.Id == id);
+
+        if (resident == null)
+        {
+            return NotFound();
+        }
+
+        return View(resident);
+    }
+
+    // POST: Resident/Delete/{id}
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var resident = await _context.Residents.FindAsync(id);
+
+        if (resident != null)
+        {
+            _context.Residents.Remove(resident);
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
 }
